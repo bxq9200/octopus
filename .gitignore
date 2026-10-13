@@ -1,0 +1,37 @@
+# ── 密钥与本地数据：绝不提交 ──
+.env
+.env.*
+!.env.example
+*.db
+*.sqlite
+*.sqlite3
+master.key
+secrets.env
+*.pem
+*.key
+
+# ── 生成产物 ──
+backend/output/
+output/
+*.log
+*.err
+*.out
+*.pid
+
+# ── Python ──
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+
+# ── 前端 ──
+frontend/node_modules/
+frontend/dist/
+
+# ── 打包 ──
+build/
+dist/
+dist_installer/
+_build_stage/

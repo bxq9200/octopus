@@ -1,0 +1,12 @@
+# Octopus 云端网关依赖（Phase 1：只跑 agent 服务）
+#
+# 注意：本服务 import 了 backend/app/** 里的 agent 代码，所以运行时还需要 backend
+# 的相关依赖。Phase 1 在本机跑时直接复用本机已装的包；打 Docker 镜像时用
+#   pip install -r cloud/requirements.txt -r backend/requirements.txt
+# 保证两边版本一致（尤其 openai / pydantic）。
+
+fastapi>=0.110
+uvicorn[standard]>=0.30
+pydantic>=2.0
+httpx>=0.27
+openai>=1.30

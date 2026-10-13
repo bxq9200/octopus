@@ -1,0 +1,331 @@
+/* Maple Font - Chinese optimized coding font */
+@import '@chinese-fonts/maple-mono-cn/dist/MapleMono-CN-Regular/result.css';
+@import '@chinese-fonts/maple-mono-cn/dist/MapleMono-CN-Bold/result.css';
+@import '@chinese-fonts/maple-mono-cn/dist/MapleMono-CN-Italic/result.css';
+@import '@chinese-fonts/maple-mono-cn/dist/MapleMono-CN-BoldItalic/result.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-octopus-bg text-octopus-text antialiased;
+    font-family: 'Maple Mono CN', 'Maple Mono', 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ── 登录页 ASCII 章鱼 logo 动画 ── */
+@keyframes octopus-gradient-flow {
+  0%   { background-position:   0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position:   0% 50%; }
+}
+@keyframes octopus-glow-pulse {
+  0%, 100% { filter: drop-shadow(0 0 12px rgba(139,92,246,.55)) drop-shadow(0 0 28px rgba(236,72,153,.25)); }
+  50%      { filter: drop-shadow(0 0 18px rgba(139,92,246,.85)) drop-shadow(0 0 40px rgba(6,182,212,.40)); }
+}
+@keyframes octopus-bob {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(0.12ch, 0.12em); }
+}
+/* 4 个触手末端各自的微摆 — 不同 duration/方向制造不同步漂浮感 */
+@keyframes octopus-tip-tl {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50%      { transform: translate(-0.45ch, 0.18em) rotate(-1.2deg); }
+}
+@keyframes octopus-tip-tr {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50%      { transform: translate( 0.45ch, 0.18em) rotate(1.2deg); }
+}
+@keyframes octopus-tip-bl {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50%      { transform: translate(-0.55ch, -0.15em) rotate(-1.5deg); }
+}
+@keyframes octopus-tip-br {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50%      { transform: translate( 0.55ch, -0.15em) rotate(1.5deg); }
+}
+@keyframes octopus-eye-glow {
+  0%, 100% { text-shadow: 0 0 4px #fff, 0 0 10px #67e8f9, 0 0 22px rgba(139,92,246,.55); }
+  50%      { text-shadow: 0 0 7px #fff, 0 0 16px #67e8f9, 0 0 34px rgba(139,92,246,.85); }
+}
+@keyframes octopus-cursor-blink {
+  0%, 49%  { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.ascii-logo {
+  position: relative;
+  display: inline-block;
+  font-family: 'Maple Mono CN', 'Maple Mono', 'SF Mono', 'Fira Code', monospace;
+  font-weight: 700;
+  line-height: 1;
+  white-space: pre;
+  font-size: clamp(7px, 0.95vw, 13px);
+  letter-spacing: 0;
+  user-select: none;
+  /* 章鱼可见内容在 81ch 宽的 pre 块里偏右 ~4ch，
+     用 margin-right 把整个块往左推，让可见内容居中到 flex 父中心 */
+  margin-right: 9ch;
+  animation: octopus-glow-pulse 6s ease-in-out infinite;
+}
+.ascii-logo__inner {
+  position: relative;
+  display: inline-block;
+  animation: octopus-bob 5s ease-in-out infinite;
+}
+.ascii-logo__body {
+  background-image: linear-gradient(120deg, #06b6d4 0%, #6366f1 30%, #8b5cf6 55%, #ec4899 100%);
+  background-size: 240% 240%;
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+  animation: octopus-gradient-flow 9s linear infinite;
+  margin: 0;
+  display: block;
+}
+.ascii-logo__tail {
+  /* 旧的整体下半身摆动 — 已被 4 个独立触手末端摆动替代，保留留空兼容 */
+  display: none;
+}
+.ascii-logo__tip {
+  position: absolute;
+  margin: 0;
+  /* 跟主体共用同一份渐变定义，flow 关键帧用相同周期 → 颜色完全同步 */
+}
+.ascii-logo__tip.tip--tl {
+  transform-origin: 100% 100%; /* 头顶左触手 —— 根部在右下方 */
+  animation:
+    octopus-gradient-flow 9s linear infinite,
+    octopus-tip-tl 3.2s ease-in-out infinite;
+}
+.ascii-logo__tip.tip--tr {
+  transform-origin: 0% 100%;
+  animation:
+    octopus-gradient-flow 9s linear infinite,
+    octopus-tip-tr 3.7s ease-in-out infinite;
+  animation-delay: 0s, -0.6s;
+}
+.ascii-logo__tip.tip--bl {
+  transform-origin: 100% 0%;
+  animation:
+    octopus-gradient-flow 9s linear infinite,
+    octopus-tip-bl 3.4s ease-in-out infinite;
+  animation-delay: 0s, -1.1s;
+}
+.ascii-logo__tip.tip--br {
+  transform-origin: 0% 0%;
+  animation:
+    octopus-gradient-flow 9s linear infinite,
+    octopus-tip-br 3.9s ease-in-out infinite;
+  animation-delay: 0s, -1.7s;
+}
+.ascii-logo__eye {
+  position: absolute;
+  width: 1ch;
+  height: 1em;
+  color: #fff;
+  text-align: center;
+  line-height: 1;
+  transform: scale(1.6);
+  transform-origin: center;
+  animation: octopus-eye-glow 2.4s ease-in-out infinite;
+  pointer-events: none;
+  /* 强制定位字符基线对齐到所在格中央 */
+  display: inline-block;
+}
+
+/* 终端品牌字（ASCII 渲染版） */
+.title-ascii {
+  font-family: 'Maple Mono CN', 'Maple Mono', 'SF Mono', 'Fira Code', monospace;
+  font-weight: 700;
+  line-height: 1;
+  white-space: pre;
+  font-size: clamp(6px, 0.78vw, 11px);
+  letter-spacing: 0;
+  user-select: none;
+  display: inline-block;
+  background-image: linear-gradient(120deg, #06b6d4 0%, #6366f1 30%, #8b5cf6 55%, #ec4899 100%);
+  background-size: 240% 240%;
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+  animation: octopus-gradient-flow 9s linear infinite;
+  filter: drop-shadow(0 0 8px rgba(139,92,246,.35));
+  margin: 0;
+}
+
+.crt-scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,.03) 0px,
+    rgba(255,255,255,.03) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: overlay;
+}
+.crt-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 50%,
+    rgba(0,0,0,.55) 100%
+  );
+}
+
+.terminal-cursor {
+  display: inline-block;
+  width: 0.55ch;
+  background: currentColor;
+  animation: octopus-cursor-blink 1s steps(2) infinite;
+}
+
+/* ─── 聊天小章鱼 ─── */
+.octopus-icon .octopus-head {
+  transform-origin: 16px 14px;
+  animation: octopus-breathe 2.6s ease-in-out infinite;
+}
+.octopus-icon .octopus-tentacles .tentacle {
+  transform-origin: center top;
+}
+.octopus-icon .tentacle.t1 { animation: octopus-wiggle-l 2.2s ease-in-out infinite; }
+.octopus-icon .tentacle.t2 { animation: octopus-wiggle-l 2.4s ease-in-out infinite; animation-delay: -0.4s; }
+.octopus-icon .tentacle.t3 { animation: octopus-wiggle-c 2.6s ease-in-out infinite; }
+.octopus-icon .tentacle.t4 { animation: octopus-wiggle-r 2.4s ease-in-out infinite; animation-delay: -0.5s; }
+.octopus-icon .tentacle.t5 { animation: octopus-wiggle-r 2.2s ease-in-out infinite; }
+.octopus-icon .octopus-eye {
+  animation: octopus-blink 4.5s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes octopus-breathe {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.06); }
+}
+@keyframes octopus-wiggle-l {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  50%      { transform: translateX(-1px) rotate(-6deg); }
+}
+@keyframes octopus-wiggle-c {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(1px); }
+}
+@keyframes octopus-wiggle-r {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  50%      { transform: translateX(1px) rotate(6deg); }
+}
+@keyframes octopus-blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95%           { transform: scaleY(0.1); }
+}
+
+/* ─── 聊天小导演 ─── */
+.director-icon .director-body {
+  transform-origin: 16px 26px;
+  animation: director-nod 3.4s ease-in-out infinite;
+}
+.director-icon .director-beret {
+  transform-origin: 16px 11px;
+  animation: director-beret-tilt 3.4s ease-in-out infinite;
+}
+.director-icon .director-pom {
+  transform-origin: 11.5px 6.5px;
+  animation: director-pom-bounce 1.6s ease-in-out infinite;
+}
+.director-icon .director-eye {
+  transform-origin: center;
+  animation: director-blink 5s ease-in-out infinite;
+}
+
+@keyframes director-nod {
+  0%, 100% { transform: rotate(0deg) translateY(0); }
+  45%      { transform: rotate(-3deg) translateY(0.3px); }
+  55%      { transform: rotate(-3deg) translateY(0.3px); }
+}
+@keyframes director-beret-tilt {
+  0%, 100% { transform: rotate(0deg); }
+  50%      { transform: rotate(4deg); }
+}
+@keyframes director-pom-bounce {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(0.6px, -1px); }
+}
+@keyframes director-blink {
+  0%, 93%, 100% { transform: scaleY(1); }
+  96%           { transform: scaleY(0.1); }
+}
+
+
+/* 0.6.5: 节点进度条 shimmer 流光动画（FlowCanvas 节点卡片 status=running 时用） */
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ─── UI 改版：节点运行中 = 白光束绕边框跑马灯（替代进度条） ─── */
+@property --beam-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes node-beam-spin {
+  to { --beam-angle: 360deg; }
+}
+.node-running-beam {
+  position: absolute;
+  inset: -3px;
+  border-radius: 15px;          /* ≈ rounded-xl(12px) + 3px 外扩 */
+  padding: 3px;                 /* 光环更粗 */
+  pointer-events: none;
+  background: conic-gradient(
+    from var(--beam-angle),
+    transparent 0deg,
+    transparent 180deg,
+    rgba(34, 211, 238, 0.5) 270deg,
+    #ffffff 325deg,
+    #ffffff 348deg,
+    rgba(34, 211, 238, 0.5) 360deg
+  );
+  /* 只保留边环，中心镂空让节点内容透出 */
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask-composite: exclude;
+  filter: drop-shadow(0 0 11px rgba(34, 211, 238, 0.95)) drop-shadow(0 0 4px rgba(255, 255, 255, 0.85));
+  animation: node-beam-spin 1.8s linear infinite;
+}
+
+/* ─── UI 改版：运行中连线 = 光电流动（覆盖 React Flow 默认 animated 的细碎虚线） ─── */
+.react-flow__edge.animated .react-flow__edge-path {
+  stroke-dasharray: 8 12 !important;
+  animation: edge-light-flow 0.6s linear infinite !important;
+}
+@keyframes edge-light-flow {
+  to { stroke-dashoffset: -20; }
+}
+
+/* 排队待跑的连线：淡青呼吸流动（弱于 running 的强光电，表示"接下来轮到谁"） */
+.react-flow__edge.edge-queued .react-flow__edge-path {
+  stroke-dasharray: 4 9;
+  animation: edge-queued-flow 1.8s linear infinite;
+}
+@keyframes edge-queued-flow {
+  to { stroke-dashoffset: -13; }
+}

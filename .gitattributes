@@ -1,0 +1,4 @@
+# 脚本换行符固定：.sh 必须 LF（否则 Linux 上报 bad interpreter）
+*.sh  text eol=lf
+*.ps1 text eol=crlf
+*.bat text eol=crlf
